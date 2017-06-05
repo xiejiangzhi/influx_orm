@@ -1,2 +1,2 @@
---format documentation
+--require gem_helper
 --color

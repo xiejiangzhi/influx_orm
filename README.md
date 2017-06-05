@@ -20,38 +20,38 @@ Or install it yourself as:
 
 ## Usage
 
+### Init
+
+Default setup
+
+```
+InfluxORM.setup(
+  database: 'xyz'
+)
+```
+
 ### Define MEASUREMENTS
 
 ```
 class Memory
   include InfluxORM
+
+  influx_tag :host
+  influx_tag :region
+  influx_val :free
+  influx_val :used
 end
 ```
 
 ### Write
 
 ```
-Memory.insert({
-  tags: {host: 'A', region: 'US'},
-  values: {free: 1234, used: 2234}
-  # timestamp: Time.now.to_i, # default 
-})
+Memory.insert(host: 'A', region: 'US', free: 1234, used: 2234)
 
 Memory.import([
-  {
-    tags: {host: 'A', region: 'US'}
-    values: {free: 1234, used: 2234},
-    timestamp: 1234567890
-  },
-  {
-    tags: {host: 'A', region: 'US'}
-    values: {free: 1244, used: 2224},
-    timestamp: 1234567900
-  },
-  {
-    tags: {host: 'B', region: 'US'}
-    values: {free: 234, used: 3234}
-  }
+  {host: 'A', region: 'US', free: 1234, used: 2234, timestamp: 1234567890},
+  {host: 'A', region: 'US', free: 1244, used: 2224, timestamp: 1234567900},
+  {host: 'B', region: 'US', free: 234, used: 3234}
 ])
 ```
 
@@ -80,6 +80,24 @@ Support query methods
 * `offset`: `offset(1)`
 * `soffset`: `soffset(1)`
 
+
+## Structure
+
+```
+-----------------
+|   InfluxORM   |
+|----- has -----|
+|    Config     |
+-----------------
+
+------------------
+|     Model      |
+|--- included ---|
+|   Connection   |
+|     Query      |
+|   Attributes   |
+------------------
+```
 
 ## Development
 
