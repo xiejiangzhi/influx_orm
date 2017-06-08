@@ -22,8 +22,6 @@ Or install it yourself as:
 
 ### Init
 
-Default setup
-
 ```
 InfluxORM.setup(
   database: 'xyz'
@@ -38,8 +36,8 @@ class Memory
 
   influx_tag :host
   influx_tag :region
-  influx_val :free
-  influx_val :used
+  influx_value :free
+  influx_value :used, :int # support :int, :float, :boolean, :string
 end
 ```
 
@@ -66,14 +64,17 @@ Memory.select('mean(*)') \
 
 Memory.where(host: 'B').limit(10).result
 Memory.where("host = 'a' AND time > now() - 1d")
+
+query_obj = Memory.where(host: 'A').or(host: 'B')
+Memory.where(region: 'US').or(query_obj) # select * from memorys where region = 'US' OR (host = 'A' OR host = 'B')
 ```
 
 Support query methods
 
 * `select`: `select('mean(*)')`, `select({mean: 'tag_name', sum: 'tag_name'})`
 * `where`: `where('tag = \'value\'')`, `where(tag: 'value', time: {gt: Time.now - 1.day})`
-* `group_by`: `group_by('time(1m) fill(0)')` eql `group_by_time(1m).fill(0)` 
-* `group_by_time`: `group_by_time('1m')`
+* `or`: `or('tag = \'value\'')`, `or(tag: 'value', time: {gt: Time.now - 1.day})`
+* `group_by`: `group_by('host')`
 * `fill`: `fill(0)`
 * `limit`: `limit(1)`
 * `slimit`: `slimit(1)`
@@ -83,25 +84,16 @@ Support query methods
 
 ## Structure
 
-```
------------------
-|   InfluxORM   |
-|----- has -----|
-|    Config     |
------------------
+`InfluxORM` has one or more instance of `Configuration`
 
-------------------
-|     Model      |
-|--- included ---|
-|   Connection   |
-|     Query      |
-|   Attributes   |
-------------------
+`Configuration` has one `Connection` and some settings
+
+`User Model` include instance `Configuration` `Query` `Attributes`
 ```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bundle install` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
