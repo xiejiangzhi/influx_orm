@@ -26,7 +26,9 @@ Or install it yourself as:
 
 ```
 InfluxORM.setup(
-  database: 'xyz'
+  connection: { # For more, see InfluxDB::Client.new
+    database: 'xyz'
+  }
 )
 ```
 
