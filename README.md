@@ -83,6 +83,9 @@ Support query methods
 * `offset`: `offset(1)`
 * `soffset`: `soffset(1)`
 
+## Examples
+
+See `/examples`
 
 ## Structure
 
