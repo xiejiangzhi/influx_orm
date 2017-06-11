@@ -95,7 +95,7 @@ Support query methods
 `Model` forward query methods to `Query`, forward write to `@configuration.connection`
 
 `Attributes` define and format the model attributes
-```
+
 
 ## Development
 
