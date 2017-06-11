@@ -84,11 +84,15 @@ Support query methods
 
 ## Structure
 
-`InfluxORM` has one or more instance of `Configuration`
+`MyModel` has one instance of `Configuration` as `@configuration`
 
-`Configuration` has one `Connection` and some settings
+`@configuration.connection` is a instance of `Connection`
 
-`User Model` include instance `Configuration` `Query` `Attributes`
+`MyModel` include modules: `Model` `Attributes`
+
+`Model` forward query methods to `Query`, forward write to `@configuration.connection`
+
+`Attributes` define and format the model attributes
 ```
 
 ## Development

@@ -23,13 +23,15 @@ module InfluxORM::Attributes
       point = {tags: {}, values: {}}
 
       hash.each do |k, v|
+        next if k == :timestamp
+
         if k.to_sym == :time
           point[:timestamp] = format_timestamp(v)
           next
         end
 
         col_type, data_type = influx_attrs[k.to_sym]
-        InfluxORM::Error.new("Invalid col_type '#{col_type}' of '#{k}'") unless col_type
+        raise InfluxORM::Error.new("Invalid col_type '#{col_type}' of '#{k}'") unless col_type
         point[col_type][k] = convert_val(data_type, v)
       end
 

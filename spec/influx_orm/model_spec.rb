@@ -36,6 +36,7 @@ RSpec.describe InfluxORM::Model do
       c = conn
       model.class_eval do
         include InfluxORM::Attributes
+        define_singleton_method(:table_name) { 'my_table' }
         define_singleton_method(:connection) { c }
       end
     end
@@ -43,7 +44,7 @@ RSpec.describe InfluxORM::Model do
     it 'should format and write point' do
       point = {tags: {t: 't'}, values: {v: 1}}
       expect(model).to receive(:attrs_to_point).with(t: 't', v: 1).and_return(point)
-      expect(conn).to receive(:insert).with(point)
+      expect(conn).to receive(:insert).with('my_table', point)
 
       model.insert(t: 't', v: 1)
     end
@@ -57,6 +58,7 @@ RSpec.describe InfluxORM::Model do
       model.class_eval do
         include InfluxORM::Attributes
         define_singleton_method(:connection) { c }
+        define_singleton_method(:table_name) { 'asdf' }
       end
     end
 
@@ -64,7 +66,7 @@ RSpec.describe InfluxORM::Model do
       points = [{tags: {t: 't'}, values: {v: 1}}, {tags: {t: 't2'}, values: {v: 2}}]
       expect(model).to receive(:attrs_to_point).with(t: 't', v: 1).and_return(points[0])
       expect(model).to receive(:attrs_to_point).with(t: 't2', v: 2).and_return(points[1])
-      expect(conn).to receive(:import).with(points)
+      expect(conn).to receive(:import).with(points.map {|p| p.merge(series: 'asdf') })
 
       model.import([{t: 't', v: 1}, {t: 't2', v: 2}])
     end

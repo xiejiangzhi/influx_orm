@@ -61,8 +61,15 @@ RSpec.describe InfluxORM::Attributes do
     end
 
     it 'should convert time to timestamp' do
-      expect(cls.attrs_to_point(ta: {}, va: '', vb: '2.1', vc: 'asdf')).to \
-        eql(tags: {ta: '{}'}, values: {va: 0, vb: 2.1, vc: true}, timestamp: Time.now.to_i)
+      t = Time.now
+      expect(cls.attrs_to_point(ta: {}, va: '', vb: '2.1', vc: 'asdf', timestamp: t)).to \
+        eql(tags: {ta: '{}'}, values: {va: 0, vb: 2.1, vc: true}, timestamp: t.to_i)
+    end
+
+    it 'should raise error if has invlaid attrs' do
+      expect {
+        cls.attrs_to_point(invalid: 'attr')
+      }.to raise_error(InfluxORM::Error)
     end
   end
 end

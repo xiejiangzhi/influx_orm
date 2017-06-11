@@ -12,11 +12,23 @@ module InfluxORM
   autoload :Query
   autoload :Connection
   autoload :Attributes
+  autoload :Configuration
+  autoload :InitModuleGenerator
 
   autoload :Error
 
-  def self.included(cls)
-    # cls.extend(ClassMethods)
+
+  class << self
+    attr_reader :configuration
+
+    def setup(options)
+      @configuration = Configuration.new(options)
+    end
+
+    def included(cls)
+      raise Error.new("Please setup with 'InfluxORM.setup' before include") unless configuration
+      cls.include(configuration.module)
+    end
   end
 end
 

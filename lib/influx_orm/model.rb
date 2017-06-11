@@ -24,13 +24,13 @@ module InfluxORM::Model
     end
 
     def insert(point_attrs)
-      connection.insert(attrs_to_point(point_attrs))
+      connection.insert(table_name, attrs_to_point(point_attrs))
     end
 
     # dependent class method: attrs_to_point
     def import(points_attrs)
       points = points_attrs.map do |point_attrs|
-        attrs_to_point(point_attrs)
+        attrs_to_point(point_attrs).merge!({series: table_name})
       end
       connection.import(points)
     end
