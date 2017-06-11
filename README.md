@@ -64,8 +64,8 @@ Memory.select('mean(*)') \
   .where(host: 'A', time: {gte: Time.now - 10.day, lte: Time.now - 1.day}) \
   .group_by('time(1m) fill(0)').result
 
-Memory.where(host: 'B').limit(10).result
-Memory.where("host = 'a' AND time > now() - 1d")
+Memory.where(host: 'B').or(host: 'C').limit(10).result
+Memory.where("host = 'A' AND time > now() - 1d").where(free: {lt: 1024}).result
 
 query_obj = Memory.where(host: 'A').or(host: 'B')
 Memory.where(region: 'US').or(query_obj) # select * from memorys where region = 'US' OR (host = 'A' OR host = 'B')

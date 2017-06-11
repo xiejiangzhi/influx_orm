@@ -13,7 +13,7 @@ class Book
 
   influx_tag :book_id
   influx_tag :category
-  influx_value :price
+  influx_value :price, :float
 end
 
 Book.insert(book_id: 1, category: 'A', price: 1.3)
@@ -26,4 +26,7 @@ Book.import([
 
 puts Book.select(mean: '*').where(time: {gte: 'now() - 3d'}) \
   .group_by('time(12h)', :category).fill(0).result
+
+puts Book.where(category: 'A').where(time: {gte: 'now() - 1d'}).result
+puts Book.where(category: 'A').or(category: 'B').result
 
