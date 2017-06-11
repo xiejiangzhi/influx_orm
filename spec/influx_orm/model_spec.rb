@@ -63,10 +63,12 @@ RSpec.describe InfluxORM::Model do
     end
 
     it 'should format and write points' do
-      points = [{tags: {t: 't'}, values: {v: 1}}, {tags: {t: 't2'}, values: {v: 2}}]
+      points = [
+        {tags: {t: 't'}, values: {v: 1}}, {tags: {t: 't2'}, values: {v: 2}, series: 'ab'}
+      ]
       expect(model).to receive(:attrs_to_point).with(t: 't', v: 1).and_return(points[0])
       expect(model).to receive(:attrs_to_point).with(t: 't2', v: 2).and_return(points[1])
-      expect(conn).to receive(:import).with(points.map {|p| p.merge(series: 'asdf') })
+      expect(conn).to receive(:import).with(points.each {|p| p[:series] ||= 'asdf' })
 
       model.import([{t: 't', v: 1}, {t: 't2', v: 2}])
     end

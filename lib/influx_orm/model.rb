@@ -30,7 +30,9 @@ module InfluxORM::Model
     # dependent class method: attrs_to_point
     def import(points_attrs)
       points = points_attrs.map do |point_attrs|
-        attrs_to_point(point_attrs).merge!({series: table_name})
+        r = attrs_to_point(point_attrs)
+        r[:series] ||= table_name
+        r
       end
       connection.import(points)
     end
