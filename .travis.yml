@@ -1,5 +1,40 @@
-sudo: false
+sudo: enable
+dist: trusty
 language: ruby
+
+cache: bundler
+
 rvm:
+  - 2.1.10
+  - 2.2.7
+  - 2.3.4
   - 2.4.1
-before_install: gem install bundler -v 1.14.6
+
+gemfile:
+  - gemfiles/activesupport-4.0
+  - gemfiles/activesupport-4.1
+  - gemfiles/activesupport-4.2
+  - gemfiles/activesupport-5.0
+  - gemfiles/activesupport-5.1
+
+matrix:
+  exclude:
+    - {rvm: '2.1.10', gemfile: 'gemfiles/activesupport-5.0'}
+    - {rvm: '2.1.10', gemfile: 'gemfiles/activesupport-5.1'}
+    - {rvm: '2.4.1', gemfile: 'gemfiles/activesupport-4.0'}
+    - {rvm: '2.4.1', gemfile: 'gemfiles/activesupport-4.1'}
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'deb https://repos.influxdata.com/ubuntu trusty stable'
+        key_url: 'https://repos.influxdata.com/influxdb.key'
+
+    packages:
+      influxdb
+
+before_install:
+  - sudo service influxdb start
+  - gem install bundler --no-doc
+
+script: bundle exec rspec
