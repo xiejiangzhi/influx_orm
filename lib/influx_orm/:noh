@@ -16,11 +16,11 @@ module InfluxORM
     end
 
     def insert(table_name, point)
-      log("INSERT to #{table_name}: #{point}") { db.write_point(table_name, point) }
+      log("INSERT to #{table_name}: #{point.to_sql}") { db.write_point(table_name, point) }
     end
 
     def import(data)
-      log("IMPORT #{data}") { db.write_points(data) }
+      db.write_points(data)
     end
 
     private

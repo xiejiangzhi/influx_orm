@@ -1,5 +1,6 @@
 RSpec.describe InfluxORM::Connection do
-  let(:conn) { InfluxORM::Connection.new(database: 'test') }
+  let(:configuration) { double('c', logger: Logger.new('/dev/null')) }
+  let(:conn) { InfluxORM::Connection.new({database: 'test'}, configuration) }
   let(:db) { conn.db }
   let(:counter) do
     Proc.new do |table|

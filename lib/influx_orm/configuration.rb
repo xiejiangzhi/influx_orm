@@ -10,7 +10,7 @@ module InfluxORM
     end
 
     def connection
-      @connection ||= Connection.new(@options[:connection])
+      @connection ||= Connection.new(@options[:connection], self)
     end
 
     def module

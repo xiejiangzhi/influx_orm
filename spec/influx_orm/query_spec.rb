@@ -1,6 +1,7 @@
 module InfluxORM
   RSpec.describe Query do
-    let(:conn) { Connection.new(database: 'test') }
+    let(:configuration) { double('c', logger: Logger.new('/dev/null')) }
+    let(:conn) { Connection.new({database: 'test'}, configuration) }
     let(:query) { model.query }
     let(:model) do
       c = conn

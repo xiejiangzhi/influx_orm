@@ -11,7 +11,8 @@ module InfluxORM
 
     describe '#connection' do
       it 'should return connection object and cache it' do
-        expect(Connection).to receive(:new).with({database: 'test', a: 1}).and_call_original
+        expect(Connection).to receive(:new) \
+          .with({database: 'test', a: 1}, configuration).and_call_original
         expect(configuration.connection).to be_a(Connection)
         expect(configuration.connection).to be_a(Connection)
       end
