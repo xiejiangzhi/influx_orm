@@ -3,6 +3,7 @@ require "influx_orm/version"
 require 'influxdb'
 
 require 'active_support'
+require 'active_support/core_ext/module/remove_method'
 require 'active_support/core_ext'
 
 module InfluxORM

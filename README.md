@@ -2,6 +2,8 @@
 
 A simple influxdb orm for ruby, base [influxdb-ruby](https://github.com/influxdata/influxdb-ruby)
 
+[![Build Status](https://travis-ci.org/xiejiangzhi/influx_orm.svg?branch=master)](https://travis-ci.org/xiejiangzhi/influx_orm)
+
 ## Installation
 
 Add this line to your application's Gemfile:
