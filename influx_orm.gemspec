@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{A simple InfluxDB ORM}
   spec.description   = %q{A simple InfluxDB ORM}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/xiejiangzhi/influx_orm"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

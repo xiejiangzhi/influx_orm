@@ -26,7 +26,9 @@ Or install it yourself as:
 
 ```
 InfluxORM.setup(
-  database: 'xyz'
+  connection: { # For more, see InfluxDB::Client.new
+    database: 'xyz'
+  }
 )
 ```
 
@@ -83,6 +85,9 @@ Support query methods
 * `offset`: `offset(1)`
 * `soffset`: `soffset(1)`
 
+## Examples
+
+See `/examples`
 
 ## Structure
 
@@ -105,7 +110,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/influx_orm.
+Bug reports and pull requests are welcome on GitHub at https://github.com/xiejiangzhi/influx_orm.
 
 
 ## License
