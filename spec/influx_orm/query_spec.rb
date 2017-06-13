@@ -209,10 +209,10 @@ module InfluxORM
       end
 
       it 'should convert time to time string' do
-        t = Time.parse('2016-1-1 20:20:11')
+        t = Time.parse('2016-1-1T20:20:11Z')
 
         expect(query.format_conds([{time: {gt: t}, val: t}], :and)).to eql(
-          "(time > '2016-01-01T20:20:11+08:00' AND val = '2016-01-01 20:20:11 +0800')"
+          "(time > '2016-01-01T20:20:11Z' AND val = '2016-01-01 20:20:11 UTC')"
         )
       end
     end
