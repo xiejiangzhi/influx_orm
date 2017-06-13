@@ -143,6 +143,8 @@ module InfluxORM
 
     def compare_cond_to_sql(name, hash)
       hash.map do |k, v|
+        v = format_query_val(v) if name.to_sym == :time
+
         case k.to_sym
         when :gt then "#{name} > #{v}"
         when :gte then "#{name} >= #{v}"
@@ -159,6 +161,17 @@ module InfluxORM
       @order.map do |k, v|
         "#{k} #{v}"
       end.join(', ')
+    end
+
+    def format_query_val(val)
+      case val
+      when Time, DateTime
+        "'#{val.iso8601}'"
+      when Date
+        "'#{val.to_time.iso8601}'"
+      else
+        val
+      end
     end
   end
 end

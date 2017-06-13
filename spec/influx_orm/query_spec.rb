@@ -41,7 +41,8 @@ module InfluxORM
 
     describe '#where' do
       it 'should save condition' do
-        expect(query).to receive(:format_conds).with([{t: 'a'}], :and).and_return('cond_str')
+        expect(query).to receive(:format_conds).with([{t: 'a'}], :and) \
+          .and_return('cond_str')
 
         expect(query.where(t: 'a').to_sql).to eql("SELECT * FROM tt WHERE cond_str")
       end
@@ -204,6 +205,14 @@ module InfluxORM
           {a: {gt: 1, lte: 5}, b: {gte: 4}, c: 1}, {time: {gte: 'now() - 1d'}}
         ], :and)).to eql(
           "(a > 1 AND a <= 5 AND b >= 4 AND c = 1) AND (time >= now() - 1d)"
+        )
+      end
+
+      it 'should convert time to time string' do
+        t = Time.parse('2016-1-1 20:20:11')
+
+        expect(query.format_conds([{time: {gt: t}, val: t}], :and)).to eql(
+          "(time > '2016-01-01T20:20:11+08:00' AND val = '2016-01-01 20:20:11 +0800')"
         )
       end
     end
